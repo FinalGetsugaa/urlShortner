@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+     <script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+</head>
+<body>
+<h1 style="text-align:center">URL Shortner</h1>
+<form id="post-form">
+    {% csrf_token %}
+<textarea name="input" id="link" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">Input URL</textarea>
+<br>
+<br>
+<button id="btn">Submit</button>
+</form>
+<br>
+<section>
+    <h2 style="text-align:center" id="output" >You'll see your Shortened URL here</section>
+</section>
+</body>
+</html>
+
+<script type="text/javascript">
+  $(document).on('submit','#post-form',function(e){
+    e.preventDefault();
+
+    $.ajax({
+      type:'POST',
+      url:'/create',
+      data:{
+        link:$('#link').val(),
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success: function(data){
+        $('h2').html("localhost:8000/"+data)
+        window.open("http://localhost:8000/"+data);
+      }
+    });
+  });
+</script>
